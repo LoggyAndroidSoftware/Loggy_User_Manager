@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:loggy_administrator/model/profile.dart';
 import 'package:loggy_administrator/model/user.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final User user = User(
-    id: 1,
-    username: 'john.doe',
-    role: 'admin',
-    profile: Profile(
-      id: 1,
-      firstname: 'John',
-      lastname: 'Doe',
-      email: 'john@gmail.com',
-      genre: 'male',
-      birthdate: '1990-01-01',
-      address: '123 Main St',
-    ),
-  );
+  // final User user = User(
+  //   id: 1,
+  //   username: 'john.doe',
+  //   role: 'admin',
+  //   profile: Profile(
+  //     id: 1,
+  //     firstname: 'John',
+  //     lastname: 'Doe',
+  //     email: 'john@gmail.com',
+  //     genre: 'male',
+  //     birthdate: '1990-01-01',
+  //     address: '123 Main St',
+  //   ),
+  // );
+
+  final User user = User(name: 'John Doe', email: 'john@gmail.com' , password: 'root', line: '1');
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +60,8 @@ class LoginScreen extends StatelessWidget {
                 String email = emailController.text;
                 String password = passwordController.text;
                 //validar  que el correo sea correcta con el usuario
-                if (email == user.profile.email && password == 'root') {
-                  Navigator.pushNamed(context, '/users');
+                if (email == user.email && password == 'root') {
+                  Navigator.pushNamed(context, '/users_list');
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                      SnackBar(

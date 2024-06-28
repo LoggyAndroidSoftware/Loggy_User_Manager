@@ -1,34 +1,46 @@
-import 'dart:convert';
-import 'profile.dart';
+// import 'dart:convert';
+// import 'profile.dart';
+//
+// class User {
+//   int id;
+//   String username;
+//   String role;
+//   Profile profile;
+//
+//   User({
+//     required this.id,
+//     required this.username,
+//     required this.role,
+//     required this.profile,
+//   });
+//
+//   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+//
+//   String toRawJson() => json.encode(toJson());
+//
+//   factory User.fromJson(Map<String, dynamic> json) => User(
+//     id: json["id"],
+//     username: json["username"],
+//     role: json["role"],
+//     profile: Profile.fromJson(json["profile"]),
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "id": id,
+//     "username": username,
+//     "role": role,
+//     "profile": profile.toJson(),
+//   };
+// }
+
+
+import 'package:flutter/material.dart';
 
 class User {
-  int id;
-  String username;
-  String role;
-  Profile profile;
+  final String name;
+  final String email;
+  final String password;
+  final String line;
 
-  User({
-    required this.id,
-    required this.username,
-    required this.role,
-    required this.profile,
-  });
-
-  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    username: json["username"],
-    role: json["role"],
-    profile: Profile.fromJson(json["profile"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "username": username,
-    "role": role,
-    "profile": profile.toJson(),
-  };
+  User({required this.name, required this.email, required this.password, required this.line});
 }

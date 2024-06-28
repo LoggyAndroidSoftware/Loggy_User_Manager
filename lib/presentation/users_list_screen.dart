@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:loggy_administrator/model/profile.dart';
+import 'package:loggy_administrator/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:loggy_administrator/model/user.dart';
 
 class UsersListScreen extends StatefulWidget {
@@ -10,55 +11,74 @@ class UsersListScreen extends StatefulWidget {
 }
 
 class _UsersListScreenState extends State<UsersListScreen> {
-  //obtener lista de usuarios
-  final List<User> users = [
-    User(
-      id: 1,
-      username: 'john.doe',
-      role: 'operator',
-      profile: Profile(
-        id: 1,
-        firstname: 'John',
-        lastname: 'Doe',
-        email: 'john@gmail.com',
-        genre: 'male',
-        birthdate: '1990-01-01',
-        address: '123 Main St',
-      ),
-    ),
-    User(
-      id: 2,
-      username: 'marc.doe',
-      role: 'operator',
-      profile: Profile(
-        id: 1,
-        firstname: 'Marc',
-        lastname: 'Doe',
-        email: 'marc@gmail.com',
-        genre: 'male',
-        birthdate: '1990-01-01',
-        address: '123 Main St',
-      ),
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final userProvider = context.watch<UserProvider>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Users List'),
       ),
-      body: ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          final User user = users[index];
-          return ListTile(
-            title: Text('${user.profile.firstname} ${user.profile.lastname}'),
-            subtitle: Text(user.profile.email),
-            trailing: Text(user.role),
-          );
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ListView.builder(
+          itemCount: userProvider.users.length,
+          itemBuilder: (context, index) {
+            final user = userProvider.users[index];
+            return Card(
+              child: ListTile(
+                title: Text(user.name),
+                subtitle: Text(user.email),
+                trailing: Text(user.line),
+
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/edit_user',
+                    arguments: user,
+                  );
+                },
+                onLongPress: () {
+                  _showDeleteDialog(context, userProvider, user.email);
+                },
+              ),
+            );
+          },
+        ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/add_user');
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, UserProvider userProvider, String email) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete User'),
+          content: Text('Are you sure you want to delete this user?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                userProvider.deleteUser(email);
+                Navigator.pop(context);
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
